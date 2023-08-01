@@ -15,8 +15,8 @@ Um projeto de estudo para desenvolvimento de um modelo de sistema ERP utilizando
 
 ## Roadmap
 
-- [ ]  Criar diagrama de classes
-- [ ]  Criar diagrama do banco de dados + codigo sql
+- [x]  Criar diagrama de classes
+- [x]  Criar diagrama do banco de dados + codigo sql
 - [ ]  Implementar módulo almoxarifado
 - [ ]  Implementar módulo pessoas
 - [ ]  Implementar módulo vendas
