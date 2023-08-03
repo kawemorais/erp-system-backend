@@ -5,6 +5,7 @@ import br.com.erpsystem.almoxarifado.dtos.unidadeDTO.UnidadeResponseDTO;
 import br.com.erpsystem.almoxarifado.models.Unidade;
 import br.com.erpsystem.almoxarifado.repositories.ProdutoRepository;
 import br.com.erpsystem.almoxarifado.repositories.UnidadeRepository;
+import br.com.erpsystem.sistema.exception.ExcecaoSolicitacaoInvalida;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,6 @@ public class UnidadeService {
     private final UnidadeRepository unidadeRepository;
     private final ProdutoRepository produtoRepository;
     private final ModelMapper mapper;
-
-    //TODO: Implementar classes para tratamento de erros
 
     public UnidadeService(UnidadeRepository unidadeRepository, ProdutoRepository produtoRepository, ModelMapper mapper) {
         this.unidadeRepository = unidadeRepository;
@@ -43,7 +42,7 @@ public class UnidadeService {
     public UnidadeResponseDTO criarUnidade(UnidadeRequestDTO unidadeRequest){
 
         if (unidadeRepository.findByNome(unidadeRequest.getNome()).isPresent()){
-            throw new RuntimeException("Ja existe unidade com este nome");
+            throw new ExcecaoSolicitacaoInvalida("Ja existe unidade com este nome");
         }
 
         Unidade unidadeSalva = unidadeRepository.save(mapper.map(unidadeRequest, Unidade.class));
@@ -66,7 +65,7 @@ public class UnidadeService {
         Unidade unidade = retornaUnidadeSeExistente(id);
 
         if(!produtoRepository.findAllByUnidade(unidade).isEmpty()){
-            throw new RuntimeException("Existe produtos com essa unidade. Operação não pode ser finalizada");
+            throw new ExcecaoSolicitacaoInvalida("Existe produtos com essa unidade. Operação não pode ser finalizada");
         }
 
         unidadeRepository.delete(unidade);
@@ -76,7 +75,6 @@ public class UnidadeService {
 
     private Unidade retornaUnidadeSeExistente(Long id){
         return unidadeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Registro unidade não encontrada"));
+                .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Registro unidade não encontrada"));
     }
-
 }
