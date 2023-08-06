@@ -1,5 +1,3 @@
-USE db_erp_system;
-
 ALTER TABLE tb_unidades
     MODIFY COLUMN nome VARCHAR(30) UNIQUE NOT NULL;
 

@@ -54,7 +54,7 @@ public class Produto implements Serializable {
     private Double peso;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fichaTecnica_id")
+    @JoinColumn(name = "fichatecnica_id")
     private FichaTecnica fichaTecnica;
 
     @OneToMany(fetch = FetchType.EAGER)

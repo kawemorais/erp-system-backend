@@ -1,5 +1,3 @@
-USE db_erp_system;
-
 CREATE TABLE IF NOT EXISTS tb_enderecos(
 	id BIGINT PRIMARY KEY AUTO_INCREMENT,
     cep VARCHAR(8) NOT NULL,
