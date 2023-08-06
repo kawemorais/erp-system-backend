@@ -1,6 +1,8 @@
 package br.com.erpsystem.almoxarifado.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,9 +26,12 @@ public class Unidade implements Serializable {
     private Long id;
 
     @Column(name = "nome", nullable = false, length = 30)
+    @NotBlank(message = "Campo nome não pode estar vazio")
     private String nome;
 
     @Column(name = "descricao", nullable = false, length = 100)
+    @NotBlank(message = "Campo descricao não pode estar vazio")
+    @Size(message = "Campo descricao deve conter no minimo dois caracteres", min = 2)
     private String descricao;
 
     public Unidade() {

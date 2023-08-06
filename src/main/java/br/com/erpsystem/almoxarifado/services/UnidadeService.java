@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,17 +59,15 @@ public class UnidadeService {
         return mapper.map(unidadeRepository.save(unidade), UnidadeResponseDTO.class);
     }
 
-    public Optional<Boolean> deletarUnidadePorId(Long id){
+    public void deletarUnidadePorId(Long id){
 
         Unidade unidade = retornaUnidadeSeExistente(id);
 
         if(!produtoRepository.findAllByUnidade(unidade).isEmpty()){
-            throw new ExcecaoSolicitacaoInvalida("Existe produtos com essa unidade. Operação não pode ser finalizada");
+            throw new ExcecaoSolicitacaoInvalida("Existem produtos com essa unidade. Operação não pode ser finalizada");
         }
 
         unidadeRepository.delete(unidade);
-
-        return Optional.of(true);
     }
 
     private Unidade retornaUnidadeSeExistente(Long id){

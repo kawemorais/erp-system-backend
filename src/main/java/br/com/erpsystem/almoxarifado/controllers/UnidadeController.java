@@ -48,7 +48,8 @@ public class UnidadeController {
 
     @Operation(summary = "Deleção lógica de uma unidade usando id", tags = "Modulo: Almoxarifado -> Unidades")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deletarUnidadePorId(@PathVariable Long id){
-        return new ResponseEntity<>(unidadeService.deletarUnidadePorId(id), HttpStatus.OK);
+    public ResponseEntity<Void> deletarUnidadePorId(@PathVariable Long id){
+        unidadeService.deletarUnidadePorId(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
