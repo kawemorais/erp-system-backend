@@ -1,6 +1,8 @@
 package br.com.erpsystem.almoxarifado.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,9 +28,12 @@ public class CategoriaProduto implements Serializable {
     private Long id;
 
     @Column(name = "codigo", unique = true, nullable = false, length = 10)
+    @NotBlank(message = "Campo codigo não pode estar vazio")
     private String codigo;
 
     @Column(name = "nome", nullable = false, length = 100)
+    @NotBlank(message = "Campo nome não pode estar vazio")
+    @Size(message = "Campo nome deve conter no minimo dois caracteres", min = 2)
     private String nome;
 
 }
