@@ -78,9 +78,8 @@ class UnidadeServiceTest {
 
         Unidade unidade = CriarUnidadeUtil.retornaUnidadeSalva();
 
-        Assertions.assertThat(respostaListaUnidadeDTO).isNotNull();
-
         Assertions.assertThat(respostaListaUnidadeDTO)
+                .isNotNull()
                 .isNotEmpty()
                 .hasSize(1)
                 .hasAtLeastOneElementOfType(UnidadeResponseDTO.class);
@@ -101,14 +100,13 @@ class UnidadeServiceTest {
 
         Unidade unidade = CriarUnidadeUtil.retornaUnidadeSalva();
 
-        Assertions.assertThat(respostaUnidadeDTO).isNotNull();
-
-        Assertions.assertThat(respostaUnidadeDTO).isExactlyInstanceOf((UnidadeResponseDTO.class));
+        Assertions.assertThat(respostaUnidadeDTO)
+                .isExactlyInstanceOf(UnidadeResponseDTO.class)
+                .isNotNull();
 
         Assertions.assertThat(respostaUnidadeDTO.getId()).isEqualTo(unidade.getId());
         Assertions.assertThat(respostaUnidadeDTO.getNome()).isEqualTo(unidade.getNome());
         Assertions.assertThat(respostaUnidadeDTO.getDescricao()).isEqualTo(unidade.getDescricao());
-
     }
 
     @Test
@@ -137,14 +135,13 @@ class UnidadeServiceTest {
 
         Unidade unidade = CriarUnidadeUtil.retornaUnidadeSalva();
 
-        Assertions.assertThat(respostaUnidadeDTO).isNotNull();
-
-        Assertions.assertThat(respostaUnidadeDTO).isExactlyInstanceOf((UnidadeResponseDTO.class));
+        Assertions.assertThat(respostaUnidadeDTO)
+                .isExactlyInstanceOf(UnidadeResponseDTO.class)
+                .isNotNull();
 
         Assertions.assertThat(respostaUnidadeDTO.getId()).isEqualTo(unidade.getId());
         Assertions.assertThat(respostaUnidadeDTO.getNome()).isEqualTo(unidade.getNome());
         Assertions.assertThat(respostaUnidadeDTO.getDescricao()).isEqualTo(unidade.getDescricao());
-
     }
 
     @Test
@@ -174,14 +171,13 @@ class UnidadeServiceTest {
 
         Unidade unidade = CriarUnidadeUtil.retornaUnidadeSalva();
 
-        Assertions.assertThat(respostaUnidadeDTO).isNotNull();
-
-        Assertions.assertThat(respostaUnidadeDTO).isExactlyInstanceOf((UnidadeResponseDTO.class));
+        Assertions.assertThat(respostaUnidadeDTO)
+                .isExactlyInstanceOf(UnidadeResponseDTO.class)
+                .isNotNull();
 
         Assertions.assertThat(respostaUnidadeDTO.getId()).isEqualTo(unidade.getId());
         Assertions.assertThat(respostaUnidadeDTO.getNome()).isEqualTo(unidade.getNome());
         Assertions.assertThat(respostaUnidadeDTO.getDescricao()).isEqualTo(unidade.getDescricao());
-
     }
 
     @Test

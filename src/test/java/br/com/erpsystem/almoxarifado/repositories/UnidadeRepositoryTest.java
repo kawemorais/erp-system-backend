@@ -30,7 +30,7 @@ class UnidadeRepositoryTest {
 
         Assertions.assertThat(unidadeSalva).isNotNull();
         Assertions.assertThat(unidadeSalva.getId()).isNotNull();
-        Assertions.assertThat(unidadeSalva.getId()).isEqualTo(unidadeSalva.getId());
+        Assertions.assertThat(unidadeSalva.getId()).isEqualTo(unidadeParaSalvar.getId());
         Assertions.assertThat(unidadeSalva.getNome()).isNotNull();
         Assertions.assertThat(unidadeSalva.getNome()).isEqualTo(unidadeParaSalvar.getNome());
         Assertions.assertThat(unidadeSalva.getDescricao()).isNotNull();
@@ -60,9 +60,7 @@ class UnidadeRepositoryTest {
     @DisplayName("Testa se unidade esta sendo deletada")
     void deletar_deveDeletarUnidade_quandoSucesso(){
 
-        Unidade unidadeParaSalvar = CriarUnidadeUtil.criarUnidadeParaSalvar();
-
-        Unidade unidadeSalva = unidadeRepository.save(unidadeParaSalvar);
+        Unidade unidadeSalva = unidadeRepository.save(CriarUnidadeUtil.criarUnidadeParaSalvar());
 
         unidadeRepository.delete(unidadeSalva);
 
@@ -75,9 +73,7 @@ class UnidadeRepositoryTest {
     @DisplayName("Deve retornar uma unidade quando passado id")
     void busca_deveRetornarUnidade_quandoPassadoIdValido(){
 
-        Unidade unidadeParaSalvar = CriarUnidadeUtil.criarUnidadeParaSalvar();
-
-        Unidade unidadeSalva = unidadeRepository.save(unidadeParaSalvar);
+        Unidade unidadeSalva = unidadeRepository.save(CriarUnidadeUtil.criarUnidadeParaSalvar());
 
         Optional<Unidade> unidadeOptional = unidadeRepository.findById(unidadeSalva.getId());
 
@@ -90,9 +86,7 @@ class UnidadeRepositoryTest {
     @DisplayName("Deve retornar lista de unidades")
     void busca_deveRetornarListaUnidades_quandoSucesso(){
 
-        Unidade unidadeParaSalvar = CriarUnidadeUtil.criarUnidadeParaSalvar();
-
-        Unidade unidadeSalva = unidadeRepository.save(unidadeParaSalvar);
+        Unidade unidadeSalva = unidadeRepository.save(CriarUnidadeUtil.criarUnidadeParaSalvar());
 
         List<Unidade> todasUnidades = unidadeRepository.findAll();
 
@@ -120,7 +114,9 @@ class UnidadeRepositoryTest {
 
         Assertions.assertThatExceptionOfType(ConstraintViolationException.class)
                 .isThrownBy(() -> unidadeRepository.save(unidade))
-                .withMessageContaining("Campo nome não pode estar vazio");
+                .withMessageContaining("Campo nome não pode estar vazio")
+                .withMessageContaining("Campo descricao não pode estar vazio");
+
 
     }
 

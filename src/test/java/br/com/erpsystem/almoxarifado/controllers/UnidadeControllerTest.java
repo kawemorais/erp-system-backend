@@ -65,9 +65,8 @@ class UnidadeControllerTest {
 
         Unidade unidade = CriarUnidadeUtil.retornaUnidadeSalva();
 
-        Assertions.assertThat(respostaListaUnidadeDTO).isNotNull();
-
         Assertions.assertThat(respostaListaUnidadeDTO)
+                .isNotNull()
                 .isNotEmpty()
                 .hasSize(1)
                 .hasAtLeastOneElementOfType(UnidadeResponseDTO.class);
@@ -92,9 +91,9 @@ class UnidadeControllerTest {
 
         Unidade unidade = CriarUnidadeUtil.retornaUnidadeSalva();
 
-        Assertions.assertThat(respostaUnidadeDTO).isNotNull();
-
-        Assertions.assertThat(respostaUnidadeDTO).isExactlyInstanceOf((UnidadeResponseDTO.class));
+        Assertions.assertThat(respostaUnidadeDTO)
+                .isNotNull()
+                .isExactlyInstanceOf(UnidadeResponseDTO.class);
 
         Assertions.assertThat(respostaUnidadeDTO.getId()).isEqualTo(unidade.getId());
         Assertions.assertThat(respostaUnidadeDTO.getNome()).isEqualTo(unidade.getNome());
@@ -106,7 +105,7 @@ class UnidadeControllerTest {
 
     @Test
     @DisplayName("Deve retornar uma unidade e codigo http 201 quando salvar unidade")
-    void salvar_deveRetornarUnidadeRespondeDTOeCodigo200_quandoSucessoCriar(){
+    void salvar_deveRetornarUnidadeRespondeDTOeCodigo201_quandoSucessoCriar(){
 
         Assertions.assertThatCode(() -> unidadeController.criarUnidade(CriarUnidadeUtil.retornaUnidadeRequestDTO()))
                 .doesNotThrowAnyException();
@@ -118,22 +117,20 @@ class UnidadeControllerTest {
 
         Unidade unidade = CriarUnidadeUtil.retornaUnidadeSalva();
 
-
-        Assertions.assertThat(respostaUnidadeDTO).isNotNull();
-
-        Assertions.assertThat(respostaUnidadeDTO).isExactlyInstanceOf((UnidadeResponseDTO.class));
+        Assertions.assertThat(respostaUnidadeDTO)
+                .isNotNull()
+                .isExactlyInstanceOf(UnidadeResponseDTO.class);
 
         Assertions.assertThat(respostaUnidadeDTO.getId()).isEqualTo(unidade.getId());
         Assertions.assertThat(respostaUnidadeDTO.getNome()).isEqualTo(unidade.getNome());
         Assertions.assertThat(respostaUnidadeDTO.getDescricao()).isEqualTo(unidade.getDescricao());
 
         Assertions.assertThat(entidadeResposta.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
     }
 
     @Test
-    @DisplayName("Deve retornar uma unidade e codigo http 201 quando alterar unidade")
-    void alterar_deveRetornarUnidadeRespondeDTOeCodigo200_quandoSucessoAlterar(){
+    @DisplayName("Deve retornar uma unidade e codigo http 200 quando alterar unidade")
+    void alterar_deveRetornarUnidadeResponseDTOeCodigo200_quandoSucessoAlterar(){
 
         Assertions.assertThatCode(() -> unidadeController
                         .alterarUnidadePorId(1L, CriarUnidadeUtil.retornaUnidadeRequestDTO()))
@@ -146,16 +143,15 @@ class UnidadeControllerTest {
 
         Unidade unidade = CriarUnidadeUtil.retornaUnidadeSalva();
 
-        Assertions.assertThat(respostaUnidadeDTO).isNotNull();
-
-        Assertions.assertThat(respostaUnidadeDTO).isExactlyInstanceOf((UnidadeResponseDTO.class));
+        Assertions.assertThat(respostaUnidadeDTO)
+                .isNotNull()
+                .isExactlyInstanceOf(UnidadeResponseDTO.class);
 
         Assertions.assertThat(respostaUnidadeDTO.getId()).isEqualTo(unidade.getId());
         Assertions.assertThat(respostaUnidadeDTO.getNome()).isEqualTo(unidade.getNome());
         Assertions.assertThat(respostaUnidadeDTO.getDescricao()).isEqualTo(unidade.getDescricao());
 
         Assertions.assertThat(entidadeResposta.getStatusCode()).isEqualTo(HttpStatus.OK);
-
     }
 
     @Test
