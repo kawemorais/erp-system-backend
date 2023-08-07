@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_almoxarifados")
 @Builder
 public class Almoxarifado implements Serializable {
@@ -32,7 +34,4 @@ public class Almoxarifado implements Serializable {
     @Column(name = "isativo", nullable = false)
     private boolean isAtivo;
 
-    public Almoxarifado() {
-
-    }
 }

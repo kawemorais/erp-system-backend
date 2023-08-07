@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_fichas_tecnicas")
 @Builder
 public class FichaTecnica implements Serializable {
@@ -49,7 +51,4 @@ public class FichaTecnica implements Serializable {
     @JoinColumn(name = "funcionario_id")
     private Funcionario pessoaCriacao;
 
-    public FichaTecnica() {
-
-    }
 }

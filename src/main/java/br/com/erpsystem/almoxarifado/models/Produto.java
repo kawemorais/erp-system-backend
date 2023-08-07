@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_produtos")
 @Builder
 public class Produto implements Serializable {
@@ -82,7 +84,4 @@ public class Produto implements Serializable {
     @Column(name = "status", nullable = false)
     private int status = StatusSistema.NORMAL.getStatusId();
 
-    public Produto() {
-
-    }
 }

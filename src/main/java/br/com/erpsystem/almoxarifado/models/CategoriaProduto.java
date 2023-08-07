@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_categorias_produto")
 @Builder
 public class CategoriaProduto implements Serializable {
@@ -29,7 +31,4 @@ public class CategoriaProduto implements Serializable {
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    public CategoriaProduto() {
-
-    }
 }

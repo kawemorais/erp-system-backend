@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_estoques_produto")
 @Builder
 public class EstoqueProduto implements Serializable {
@@ -59,7 +61,4 @@ public class EstoqueProduto implements Serializable {
     @Column(name = "locbox", length = 100)
     private String locBox;
 
-    public EstoqueProduto() {
-
-    }
 }

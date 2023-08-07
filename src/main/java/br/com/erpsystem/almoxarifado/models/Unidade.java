@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_unidades")
 @Builder
 public class Unidade implements Serializable {
@@ -34,7 +36,4 @@ public class Unidade implements Serializable {
     @Size(message = "Campo descricao deve conter no minimo dois caracteres", min = 2)
     private String descricao;
 
-    public Unidade() {
-
-    }
 }

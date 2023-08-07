@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_funcionarios")
 @Builder
 public class Funcionario implements Serializable {
@@ -81,8 +82,5 @@ public class Funcionario implements Serializable {
     @JoinColumn(name = "funcao_id", nullable = false)
     private Funcao funcao;
 
-    public Funcionario() {
-
-    }
 }
 

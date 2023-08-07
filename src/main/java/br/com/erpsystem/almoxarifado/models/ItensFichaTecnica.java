@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_itens_fichatecnica")
 @Builder
 public class ItensFichaTecnica implements Serializable {
@@ -34,7 +36,4 @@ public class ItensFichaTecnica implements Serializable {
     @Column(name = "subtotal", nullable = false, precision = 15, scale = 4)
     private BigDecimal subTotal;
 
-    public ItensFichaTecnica() {
-
-    }
 }
