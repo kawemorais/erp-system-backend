@@ -53,6 +53,10 @@ public class UnidadeService {
 
         Unidade unidade = retornaUnidadeSeExistente(id);
 
+        if (unidadeRepository.findByNome(unidadeRequest.getNome()).isPresent()){
+            throw new ExcecaoSolicitacaoInvalida("Ja existe unidade com este nome");
+        }
+
         unidade.setNome(unidadeRequest.getNome());
         unidade.setDescricao(unidadeRequest.getDescricao());
 
