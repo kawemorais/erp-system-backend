@@ -84,6 +84,20 @@ class CategoriaProdutoRepositoryTest {
     }
 
     @Test
+    @DisplayName("Deve retornar uma categoria produto quando passado codigo")
+    void busca_deveRetornarCategoriaProduto_quandoPassadoCodigoValido(){
+
+        CategoriaProduto categoriaProdutoSalva = categoriaProdutoRepository
+                .save(CriarCategoriaProdutoUtil.criarCategoriaProdutoParaSalvar());
+
+        Optional<CategoriaProduto> categoriaProdutoOptional = categoriaProdutoRepository.findByCodigo(categoriaProdutoSalva.getCodigo());
+
+        Assertions.assertThat(categoriaProdutoOptional).isPresent();
+
+        Assertions.assertThat(categoriaProdutoOptional.get()).isEqualTo(categoriaProdutoSalva);
+    }
+
+    @Test
     @DisplayName("Deve retornar lista de categoria produto")
     void busca_deveRetornarListaCategoriaProduto_quandoSucesso(){
 
@@ -104,6 +118,15 @@ class CategoriaProdutoRepositoryTest {
     void busca_deveRetornarOptionalVazio_quandoPassadoIdInvalidoOuInexistente(){
 
         Optional<CategoriaProduto> categoriaProdutoOptional = categoriaProdutoRepository.findById(1L);
+
+        Assertions.assertThat(categoriaProdutoOptional).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Deve retornar nula quando passado codigo invalido/inexistente")
+    void busca_deveRetornarOptionalVazio_quandoPassadoCodigoInvalidoOuInexistente(){
+
+        Optional<CategoriaProduto> categoriaProdutoOptional = categoriaProdutoRepository.findByCodigo("xxxx");
 
         Assertions.assertThat(categoriaProdutoOptional).isEmpty();
     }

@@ -153,7 +153,7 @@ class CategoriaProdutoControllerTest {
     }
 
     @Test
-    @DisplayName("Deve retornar void e codigo http 200 quando excluir unidade")
+    @DisplayName("Deve retornar void e codigo http 200 quando excluir categoria")
     void excluir_deveRetornarVoidECodigo200_quandoSucessoExcluir(){
         Assertions.assertThatCode(() -> categoriaProdutoController.deletarCategoriaProdutoPorId(1L))
                 .doesNotThrowAnyException();

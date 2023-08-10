@@ -108,7 +108,7 @@ class UnidadeRepositoryTest {
 
     @Test
     @DisplayName("Deve retornar ConstraintViolationException quando nome e/ou descricao forem nulos")
-    void busca_deveRetornarConstraintViolationException_quandoNomeOuDescricaoForemNulos(){
+    void salvar_deveRetornarConstraintViolationException_quandoNomeOuDescricaoForemNulos(){
 
         Unidade unidade = CriarUnidadeUtil.criarUnidadeInvalidaParaSalvar();
 
@@ -122,7 +122,7 @@ class UnidadeRepositoryTest {
 
     @Test
     @DisplayName("Deve retornar ConstraintViolationException quando descricao for menor que dois caracteres")
-    void busca_deveRetornarConstraintViolationException_quandoDescricaoForMenorDoisCaracteres(){
+    void salvar_deveRetornarConstraintViolationException_quandoDescricaoForMenorDoisCaracteres(){
 
         Unidade unidade = CriarUnidadeUtil.criarUnidadeDescricaoInvalidaParaSalvar();
 
