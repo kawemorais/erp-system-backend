@@ -23,14 +23,14 @@ public class AlmoxarifadoController {
 
     @Operation(summary = "Lista todas os almoxarifados cadastrados", tags = "Modulo: Almoxarifado -> Almoxarifado Estoque")
     @GetMapping
-    public ResponseEntity<List<AlmoxarifadoResponseDTO>> listarTodasCategoriasProduto(){
+    public ResponseEntity<List<AlmoxarifadoResponseDTO>> listarTodosAlmoxarifados(){
         return new ResponseEntity<>(almoxarifadoService.listarTodosAlmoxarifados(), HttpStatus.OK);
     }
 
     @Operation(summary = "Lista todas os almoxarifados cadastrados por status(ativo/inativo)",
             tags = "Modulo: Almoxarifado -> Almoxarifado Estoque")
     @GetMapping(value = "/busca")
-    public ResponseEntity<List<AlmoxarifadoResponseDTO>> listarTodasCategoriasProdutoPorStatus(@RequestParam String status){
+    public ResponseEntity<List<AlmoxarifadoResponseDTO>> listarTodosAlmoxarifadosPorStatus(@RequestParam String status){
         return new ResponseEntity<>(almoxarifadoService.listarTodosAlmoxarifadosPorStatus(status), HttpStatus.OK);
     }
 
@@ -48,14 +48,14 @@ public class AlmoxarifadoController {
 
     @Operation(summary = "Altera um almoxarifado usando id", tags = "Modulo: Almoxarifado -> Almoxarifado Estoque")
     @PutMapping(value = "/{id:[\\d]+}")
-    public ResponseEntity<AlmoxarifadoResponseDTO> alterarCategoriaProdutoPorId(@PathVariable Long id,
+    public ResponseEntity<AlmoxarifadoResponseDTO> alterarAlmoxarifadoPorId(@PathVariable Long id,
                                                                   @RequestBody @Valid AlmoxarifadoRequestDTO almoxarifadoRequest){
         return new ResponseEntity<>(almoxarifadoService.alterarAlmoxarifadoPorId(id, almoxarifadoRequest), HttpStatus.OK);
     }
 
     @Operation(summary = "Deleção fisica de um almoxarifado usando id", tags = "Modulo: Almoxarifado -> Almoxarifado Estoque")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deletarCategoriaProdutoPorId(@PathVariable Long id){
+    public ResponseEntity<Void> deletarAlmoxarifadoPorId(@PathVariable Long id){
         almoxarifadoService.deletarAlmoxarifadoPorId(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

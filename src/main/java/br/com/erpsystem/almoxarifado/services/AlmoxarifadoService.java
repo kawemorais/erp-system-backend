@@ -32,7 +32,7 @@ public class AlmoxarifadoService {
     public List<AlmoxarifadoResponseDTO> listarTodosAlmoxarifados(){
         return almoxarifadoRepository.findAll()
                 .stream()
-                .map(categoriaProduto -> mapper.map(categoriaProduto, AlmoxarifadoResponseDTO.class))
+                .map(almoxarifado -> mapper.map(almoxarifado, AlmoxarifadoResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -45,7 +45,7 @@ public class AlmoxarifadoService {
 
         return almoxarifadoRepository.findAllByIsAtivo(isAtivo)
                 .stream()
-                .map(categoriaProduto -> mapper.map(categoriaProduto, AlmoxarifadoResponseDTO.class))
+                .map(almoxarifado -> mapper.map(almoxarifado, AlmoxarifadoResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -98,7 +98,7 @@ public class AlmoxarifadoService {
 
     private Almoxarifado retornaAlmoxarifadoSeExistente(Long id){
         return almoxarifadoRepository.findById(id)
-                .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Registro almoxarifado não encontrada"));
+                .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Registro almoxarifado não encontrado"));
     }
 
     private void checaExistenciaParametrosDuplicados(AlmoxarifadoRequestDTO almoxarifadoRequest, Long id){

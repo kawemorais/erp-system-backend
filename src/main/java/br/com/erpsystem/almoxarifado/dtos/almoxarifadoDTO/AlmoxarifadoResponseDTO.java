@@ -14,6 +14,6 @@ public class AlmoxarifadoResponseDTO {
     private Long id;
     private String codigo;
     private String nome;
-    private boolean isAtivo;
+    private Boolean isAtivo;
 
 }
