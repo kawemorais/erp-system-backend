@@ -1,7 +1,9 @@
 package br.com.erpsystem.almoxarifado.models;
 
 import br.com.erpsystem.pessoa.models.Fornecedor;
+import br.com.erpsystem.pessoa.models.Funcionario;
 import br.com.erpsystem.sistema.models.enums.StatusSistema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,8 +47,8 @@ public class Produto implements Serializable {
     @JoinColumn(name = "categoria_id", nullable = false)
     private CategoriaProduto categoriaProduto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fornecedor_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fornecedor_id")
     private Fornecedor fornecedor;
 
     @Column(name = "descricao")
@@ -59,6 +61,7 @@ public class Produto implements Serializable {
     @JoinColumn(name = "fichatecnica_id")
     private FichaTecnica fichaTecnica;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "produto_id")
     private List<EstoqueProduto> estoques;
@@ -71,8 +74,12 @@ public class Produto implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dataAlteracao;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "funcionario_id", nullable = false)
+    private Funcionario pessoaCriacao;
+
     @Column(name = "isativo", nullable = false)
-    private boolean isAtivo;
+    private Boolean isAtivo;
 
     @Column(name = "precoultimacompra", precision = 15, scale = 4)
     private BigDecimal precoUltimaCompra;

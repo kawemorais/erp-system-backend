@@ -1,5 +1,6 @@
 package br.com.erpsystem.almoxarifado.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +33,7 @@ public class EstoqueProduto implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "produto_id", nullable = false)
+    @JsonIgnore()
     private Produto produto;
 
     @Column(name = "quantidade", nullable = false)
