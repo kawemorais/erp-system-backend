@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Table(name = "tb_itens_fichatecnica")
 @Builder
-public class ItensFichaTecnica implements Serializable {
+public class ItemFichaTecnica implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

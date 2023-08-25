@@ -23,20 +23,20 @@ public class Fornecedor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected Long id;
+    private Long id;
 
     @Column(name = "telefone", length = 10)
-    protected String telefone;
+    private String telefone;
 
     @Column(name = "celular", length = 11)
-    protected String celular;
+    private String celular;
 
     @Column(name = "email", nullable = false)
-    protected String email;
+    private String email;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
-    protected Endereco endereco;
+    private Endereco endereco;
 
     @Column(name = "nomefantasia", nullable = false)
     private String nomeFantasia;
@@ -54,6 +54,6 @@ public class Fornecedor implements Serializable {
     private String inscricaoMunicipal;
 
     @Column(name = "isativo", nullable = false)
-    protected Boolean isAtivo;
+    private Boolean isAtivo;
 
 }

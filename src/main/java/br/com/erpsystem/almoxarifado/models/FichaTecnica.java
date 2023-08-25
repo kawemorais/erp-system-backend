@@ -34,7 +34,7 @@ public class FichaTecnica implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "fichatecnica_id", nullable = false)
-    private List<ItensFichaTecnica> itensFichaTecnica;
+    private List<ItemFichaTecnica> itensFichaTecnica;
 
     @Column(name = "custototal", precision = 15, scale = 4)
     private BigDecimal custoTotal;

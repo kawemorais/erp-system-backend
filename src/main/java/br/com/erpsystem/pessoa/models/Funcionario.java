@@ -58,6 +58,7 @@ public class Funcionario implements Serializable {
     private LocalDate dataNascimento;
 
     @Column(name = "sexo", nullable = false)
+    @Enumerated(EnumType.STRING)
     private TipoSexo sexo;
 
     @Column(name = "matricula", length = 20)

@@ -1,6 +1,5 @@
 package br.com.erpsystem.almoxarifado.dtos.estoqueProdutoDTO;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Builder;
@@ -12,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 public class EstoqueProdutoAtualizarRequestDTO {
 
-    @NotEmpty(message = "O campo quantidade é obrigatorio")
+    @NotNull(message = "O campo quantidade é obrigatorio")
     @Positive(message = "A quantidade deve ser um numero positivo maior que zero")
     private Double quantidade;
 
