@@ -69,10 +69,29 @@ public class EstoqueProdutoService {
 
     public EstoqueProdutoResponseDTO criarNovoEstoqueProduto(EstoqueProdutoRequestDTO estoqueProdutoRequest){
 
-        EstoqueProduto estoqueProduto = validaRequisicaoEstoque(estoqueProdutoRequest.getFkAlmoxarifado(),
-                                                                estoqueProdutoRequest.getFkProduto());
+        validaRequisicaoEstoque(estoqueProdutoRequest.getFkAlmoxarifado(), estoqueProdutoRequest.getFkProduto());
 
-        return mapper.map(estoqueProduto, EstoqueProdutoResponseDTO.class);
+        Double quantidade = estoqueProdutoRequest.getQuantidade();
+        BigDecimal valorUnitario = estoqueProdutoRequest.getValorUnitarioCompra();
+
+
+        EstoqueProduto estoqueProduto = EstoqueProduto.builder()
+                .produto(retornaProdutoSeExistente(estoqueProdutoRequest.getFkProduto()))
+                .almoxarifado(retornaAlmoxarifadoSeExistente(estoqueProdutoRequest.getFkAlmoxarifado()))
+                .quantidade(quantidade)
+                .valorUnitarioProdutoEstoque(valorUnitario)
+                .valorTotalProdutoEstoque(calculaValorTotalEstoque(quantidade, valorUnitario))
+                .estoqueMinimo(estoqueProdutoRequest.getEstoqueMinimo())
+                .estoqueMaximo(estoqueProdutoRequest.getEstoqueMaximo())
+                .estoquePontoPedido(estoqueProdutoRequest.getEstoquePontoPedido())
+                .locCorredor(estoqueProdutoRequest.getLocCorredor())
+                .locPrateleira(estoqueProdutoRequest.getLocPrateleira())
+                .locBox(estoqueProdutoRequest.getLocBox())
+                .build();
+
+        EstoqueProduto estoqueProdutoSalvo = estoqueProdutoRepository.save(estoqueProduto);
+
+        return mapper.map(estoqueProdutoSalvo, EstoqueProdutoResponseDTO.class);
 
     }
 
@@ -82,7 +101,7 @@ public class EstoqueProdutoService {
         EstoqueProduto estoqueProduto = retornaEstoqueProdutoSeIdExistente(id);
 
 
-        BigDecimal valorTotalEmEstoque = retornaValorTotalEstoqueAoAtualizar(estoqueProdutoRequest.getQuantidade(),
+        BigDecimal valorTotalEmEstoque = calculaValorTotalEstoque(estoqueProdutoRequest.getQuantidade(),
                                                                     estoqueProdutoRequest.getValorUnitarioCompra());
 
         estoqueProduto.setQuantidade(estoqueProdutoRequest.getQuantidade());
@@ -150,19 +169,20 @@ public class EstoqueProdutoService {
                 .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Estoque produto não encontrado"));
     }
 
-    private EstoqueProduto validaRequisicaoEstoque(Long fkAlmoxarifado, Long fkProduto){
+    private void validaRequisicaoEstoque(Long fkAlmoxarifado, Long fkProduto){
 
         Almoxarifado almoxarifado = retornaAlmoxarifadoSeExistente(fkAlmoxarifado);
 
         Produto produto = retornaProdutoSeExistente(fkProduto);
 
-        return estoqueProdutoRepository.findByAlmoxarifadoAndProduto(almoxarifado, produto)
-                .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Ja existe estoque do produto "
-                        + produto.getNome() + " no almoxarifado "
-                        + almoxarifado.getNome()));
+        if(estoqueProdutoRepository.findByAlmoxarifadoAndProduto(almoxarifado, produto).isPresent()){
+            throw new ExcecaoSolicitacaoInvalida("Ja existe estoque do produto "
+                    + produto.getNome() + " no almoxarifado "
+                    + almoxarifado.getNome());
+        }
     }
 
-    private BigDecimal retornaValorTotalEstoqueAoAtualizar(Double quantidade, BigDecimal valorUnitario){
+    private BigDecimal calculaValorTotalEstoque(Double quantidade, BigDecimal valorUnitario){
         return valorUnitario.multiply(BigDecimal.valueOf(quantidade));
     }
 
