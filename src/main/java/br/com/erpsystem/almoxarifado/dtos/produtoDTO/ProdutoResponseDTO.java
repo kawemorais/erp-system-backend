@@ -1,11 +1,10 @@
 package br.com.erpsystem.almoxarifado.dtos.produtoDTO;
 
+import br.com.erpsystem.almoxarifado.dtos.fichaTecnicaDTO.FichaTecnicaResponseDTO;
 import br.com.erpsystem.almoxarifado.models.CategoriaProduto;
 import br.com.erpsystem.almoxarifado.models.EstoqueProduto;
-import br.com.erpsystem.almoxarifado.models.FichaTecnica;
 import br.com.erpsystem.almoxarifado.models.Unidade;
 import br.com.erpsystem.pessoa.dtos.FornecedorProdutoResponseDTO;
-import br.com.erpsystem.pessoa.models.Funcionario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,7 +37,7 @@ public class ProdutoResponseDTO {
 
     private Double peso;
 
-    private FichaTecnica fichaTecnica;
+    private FichaTecnicaResponseDTO fichaTecnica;
 
     private List<EstoqueProduto> estoques;
 
@@ -47,8 +46,6 @@ public class ProdutoResponseDTO {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", locale = "pt_BR")
     private LocalDateTime dataAlteracao;
-
-    private Funcionario funcionario;
 
     private Boolean isAtivo;
 

@@ -76,6 +76,7 @@ public class Produto implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "funcionario_id", nullable = false)
+    @JsonIgnore
     private Funcionario pessoaCriacao;
 
     @Column(name = "isativo", nullable = false)

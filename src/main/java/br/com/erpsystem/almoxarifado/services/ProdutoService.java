@@ -126,6 +126,10 @@ public class ProdutoService {
         return mapper.map(produtoSalvo, ProdutoResponseDTO.class);
     }
 
+    public void salvarFichaTecnicaProduto(Produto produto){
+        produtoRepository.save(produto);
+    }
+
     public void deletarProdutoPorId(Long id){
         Produto produto = retornaProdutoSeExistente(id);
 
@@ -137,7 +141,7 @@ public class ProdutoService {
         produtoRepository.save(produto);
     }
 
-    private Produto retornaProdutoSeExistente(Long id){
+    protected Produto retornaProdutoSeExistente(Long id){
         return produtoRepository.findByIdAndStatusEquals(id, StatusSistema.NORMAL.getStatusId())
                 .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Produto não encontrado"));
     }

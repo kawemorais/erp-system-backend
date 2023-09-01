@@ -1,6 +1,7 @@
 package br.com.erpsystem.almoxarifado.models;
 
 import br.com.erpsystem.pessoa.models.Funcionario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,7 @@ public class FichaTecnica implements Serializable {
     private String nome;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "fichatecnica_id", nullable = false)
+    @JoinColumn(name = "fichatecnica_id", nullable = false, updatable = false, insertable = false)
     private List<ItemFichaTecnica> itensFichaTecnica;
 
     @Column(name = "custototal", precision = 15, scale = 4)
@@ -47,8 +48,9 @@ public class FichaTecnica implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dataUltimaAlteracao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "funcionario_id")
+    @JsonIgnore
     private Funcionario pessoaCriacao;
 
 }
