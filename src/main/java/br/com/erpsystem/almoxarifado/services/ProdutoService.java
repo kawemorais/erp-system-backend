@@ -3,6 +3,7 @@ package br.com.erpsystem.almoxarifado.services;
 import br.com.erpsystem.almoxarifado.dtos.produtoDTO.ProdutoRequestDTO;
 import br.com.erpsystem.almoxarifado.dtos.produtoDTO.ProdutoResponseDTO;
 import br.com.erpsystem.almoxarifado.models.CategoriaProduto;
+import br.com.erpsystem.almoxarifado.models.EstoqueProduto;
 import br.com.erpsystem.almoxarifado.models.Produto;
 import br.com.erpsystem.almoxarifado.models.Unidade;
 import br.com.erpsystem.almoxarifado.repositories.CategoriaProdutoRepository;
@@ -15,12 +16,16 @@ import br.com.erpsystem.pessoa.repositories.FuncionarioRepository;
 import br.com.erpsystem.sistema.exception.ExcecaoSolicitacaoInvalida;
 import br.com.erpsystem.sistema.models.enums.StatusSistema;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -30,19 +35,22 @@ public class ProdutoService {
     private final CategoriaProdutoRepository categoriaProdutoRepository;
     private final FornecedorRepository fornecedorRepository;
     private final FuncionarioRepository funcionarioRepository;
-    private final EstoqueProdutoService estoqueProdutoService;
+    private EstoqueProdutoService estoqueProdutoService;
     private final ModelMapper mapper;
 
-    public ProdutoService(ProdutoRepository produtoRepository, UnidadeRepository unidadeRepository,
-                          CategoriaProdutoRepository categoriaProdutoRepository, FornecedorRepository fornecedorRepository,
-                          FuncionarioRepository funcionarioRepository, EstoqueProdutoService estoqueProdutoService, ModelMapper mapper) {
+    public ProdutoService(ProdutoRepository produtoRepository, UnidadeRepository unidadeRepository, CategoriaProdutoRepository categoriaProdutoRepository, FornecedorRepository fornecedorRepository, FuncionarioRepository funcionarioRepository, ModelMapper mapper) {
         this.produtoRepository = produtoRepository;
         this.unidadeRepository = unidadeRepository;
         this.categoriaProdutoRepository = categoriaProdutoRepository;
         this.fornecedorRepository = fornecedorRepository;
         this.funcionarioRepository = funcionarioRepository;
-        this.estoqueProdutoService = estoqueProdutoService;
         this.mapper = mapper;
+    }
+
+    @Lazy
+    @Autowired
+    private void setEstoqueProdutoService(EstoqueProdutoService estoqueProdutoService){
+        this.estoqueProdutoService = estoqueProdutoService;
     }
 
     public List<ProdutoResponseDTO> listarTodosProdutos(){
@@ -176,4 +184,35 @@ public class ProdutoService {
        return estoqueProdutoService.listarTodosEstoquesPorParametro("produto", id).size() > 0;
     }
 
+    public void atualizaPrecoCompraProduto(Long id, BigDecimal valorUnitarioCompra) {
+        Produto produto = retornaProdutoSeExistente(id);
+        produto.setPrecoUltimaCompra(valorUnitarioCompra);
+
+        produtoRepository.save(produto);
+    }
+
+    public void atualizaValorCustoProduto(Long id){
+        Produto produto = retornaProdutoSeExistente(id);
+
+        BigDecimal valorCustoProduto = BigDecimal.ZERO;
+
+        if (Optional.ofNullable(produto.getFichaTecnica()).isPresent()){
+            valorCustoProduto = produto.getFichaTecnica().getCustoTotal();
+        } else {
+            List<EstoqueProduto> estoques = produto.getEstoques();
+
+            if(!estoques.isEmpty()){
+                BigDecimal valorAcumuladoEstoque = BigDecimal.ZERO;
+
+                for (EstoqueProduto estoque : estoques){
+                    valorAcumuladoEstoque = valorAcumuladoEstoque.add(estoque.getValorUnitarioProdutoEstoque());
+                }
+
+                valorCustoProduto = valorAcumuladoEstoque.divide(BigDecimal.valueOf(estoques.size()), RoundingMode.HALF_EVEN);
+            }
+        }
+
+        produto.setCustoProduto(valorCustoProduto);
+        produtoRepository.save(produto);
+    }
 }

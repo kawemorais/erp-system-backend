@@ -84,6 +84,7 @@ public class FichaTecnicaService {
 
         }
         fichaTecnicaRepository.save(fichaTecnicaCriada);
+        produtoService.atualizaValorCustoProduto(produto.getId());
         return mapper.map(fichaTecnicaCriada, FichaTecnicaResponseDTO.class);
     }
 

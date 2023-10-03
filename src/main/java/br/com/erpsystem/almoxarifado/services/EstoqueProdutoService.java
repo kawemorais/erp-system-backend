@@ -12,6 +12,8 @@ import br.com.erpsystem.almoxarifado.repositories.EstoqueProdutoRepository;
 import br.com.erpsystem.almoxarifado.repositories.ProdutoRepository;
 import br.com.erpsystem.sistema.exception.ExcecaoSolicitacaoInvalida;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,15 +27,21 @@ public class EstoqueProdutoService {
     private final EstoqueProdutoRepository estoqueProdutoRepository;
     private final AlmoxarifadoRepository almoxarifadoRepository;
     private final ProdutoRepository produtoRepository;
+    private ProdutoService produtoService;
 
     private final ModelMapper mapper;
-
 
     public EstoqueProdutoService(EstoqueProdutoRepository estoqueProdutoRepository, AlmoxarifadoRepository almoxarifadoRepository, ProdutoRepository produtoRepository, ModelMapper mapper) {
         this.estoqueProdutoRepository = estoqueProdutoRepository;
         this.almoxarifadoRepository = almoxarifadoRepository;
         this.produtoRepository = produtoRepository;
         this.mapper = mapper;
+    }
+
+    @Lazy
+    @Autowired
+    private void setProdutoService(ProdutoService produtoService){
+        this.produtoService = produtoService;
     }
 
     public List<EstoqueProdutoResponseDTO> listarTodosEstoquesPorParametro(String parametro, Long fkParametro){
@@ -74,9 +82,10 @@ public class EstoqueProdutoService {
         Double quantidade = estoqueProdutoRequest.getQuantidade();
         BigDecimal valorUnitario = estoqueProdutoRequest.getValorUnitarioCompra();
 
+        Produto produto = retornaProdutoSeExistente(estoqueProdutoRequest.getFkProduto());
 
         EstoqueProduto estoqueProduto = EstoqueProduto.builder()
-                .produto(retornaProdutoSeExistente(estoqueProdutoRequest.getFkProduto()))
+                .produto(produto)
                 .almoxarifado(retornaAlmoxarifadoSeExistente(estoqueProdutoRequest.getFkAlmoxarifado()))
                 .quantidade(quantidade)
                 .valorUnitarioProdutoEstoque(valorUnitario)
@@ -90,6 +99,9 @@ public class EstoqueProdutoService {
                 .build();
 
         EstoqueProduto estoqueProdutoSalvo = estoqueProdutoRepository.save(estoqueProduto);
+
+        produtoService.atualizaPrecoCompraProduto(produto.getId(), estoqueProdutoRequest.getValorUnitarioCompra());
+        produtoService.atualizaValorCustoProduto(produto.getId());
 
         return mapper.map(estoqueProdutoSalvo, EstoqueProdutoResponseDTO.class);
 
@@ -118,6 +130,8 @@ public class EstoqueProdutoService {
 
         EstoqueProduto estoqueSalvo = estoqueProdutoRepository.save(estoqueProduto);
 
+        produtoService.atualizaValorCustoProduto(estoqueSalvo.getProduto().getId());
+
         return mapper.map(estoqueSalvo, EstoqueProdutoResponseDTO.class);
 
     }
@@ -144,6 +158,11 @@ public class EstoqueProdutoService {
         estoqueProduto.setValorTotalProdutoEstoque(novoValorTotalProdutoEmEstoque);
 
         EstoqueProduto estoqueSalvo = estoqueProdutoRepository.save(estoqueProduto);
+
+        Produto produto = estoqueSalvo.getProduto();
+
+        produtoService.atualizaPrecoCompraProduto(produto.getId(), estoqueProdutoRequest.getValorUnitarioCompra());
+        produtoService.atualizaValorCustoProduto(produto.getId());
 
         return mapper.map(estoqueSalvo, EstoqueProdutoResponseDTO.class);
 
@@ -195,7 +214,7 @@ public class EstoqueProdutoService {
     }
 
     private BigDecimal calculaValorUnitarioProdutoEmEstoque(BigDecimal valorTotalAtual, Double novaQuantidade){
-        return valorTotalAtual.divide(BigDecimal.valueOf(novaQuantidade), RoundingMode.UNNECESSARY);
+        return valorTotalAtual.divide(BigDecimal.valueOf(novaQuantidade), RoundingMode.HALF_EVEN);
     }
 
 }
