@@ -37,4 +37,6 @@ public class EstoqueProdutoAtualizarRequestDTO {
     @Builder.Default
     private String locBox = "";
 
+    private String observacao;
+
 }

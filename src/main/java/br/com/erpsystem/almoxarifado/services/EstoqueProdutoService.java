@@ -7,6 +7,7 @@ import br.com.erpsystem.almoxarifado.dtos.estoqueProdutoDTO.EstoqueProdutoRespon
 import br.com.erpsystem.almoxarifado.models.Almoxarifado;
 import br.com.erpsystem.almoxarifado.models.EstoqueProduto;
 import br.com.erpsystem.almoxarifado.models.Produto;
+import br.com.erpsystem.almoxarifado.models.enums.TipoMovimentacaoEstoque;
 import br.com.erpsystem.almoxarifado.repositories.AlmoxarifadoRepository;
 import br.com.erpsystem.almoxarifado.repositories.EstoqueProdutoRepository;
 import br.com.erpsystem.almoxarifado.repositories.ProdutoRepository;
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EstoqueProdutoService {
@@ -27,6 +29,7 @@ public class EstoqueProdutoService {
     private final EstoqueProdutoRepository estoqueProdutoRepository;
     private final AlmoxarifadoRepository almoxarifadoRepository;
     private final ProdutoRepository produtoRepository;
+    private MovimentacaoEstoqueService movimentacaoEstoqueService;
     private ProdutoService produtoService;
 
     private final ModelMapper mapper;
@@ -42,6 +45,12 @@ public class EstoqueProdutoService {
     @Autowired
     private void setProdutoService(ProdutoService produtoService){
         this.produtoService = produtoService;
+    }
+
+    @Lazy
+    @Autowired
+    private void setMovimentacaoEstoqueService(MovimentacaoEstoqueService movimentacaoEstoqueService){
+        this.movimentacaoEstoqueService = movimentacaoEstoqueService;
     }
 
     public List<EstoqueProdutoResponseDTO> listarTodosEstoquesPorParametro(String parametro, Long fkParametro){
@@ -103,6 +112,10 @@ public class EstoqueProdutoService {
         produtoService.atualizaPrecoCompraProduto(produto.getId(), estoqueProdutoRequest.getValorUnitarioCompra());
         produtoService.atualizaValorCustoProduto(produto.getId());
 
+        movimentacaoEstoqueService.salvarMovimentacaoEstoque(estoqueProduto.getProduto(), estoqueProduto.getAlmoxarifado(),
+                estoqueProdutoRequest.getQuantidade(), TipoMovimentacaoEstoque.ENTRADA, "",
+                Optional.empty());
+
         return mapper.map(estoqueProdutoSalvo, EstoqueProdutoResponseDTO.class);
 
     }
@@ -111,7 +124,6 @@ public class EstoqueProdutoService {
                                                                   EstoqueProdutoAtualizarRequestDTO estoqueProdutoRequest){
 
         EstoqueProduto estoqueProduto = retornaEstoqueProdutoSeIdExistente(id);
-
 
         BigDecimal valorTotalEmEstoque = calculaValorTotalEstoque(estoqueProdutoRequest.getQuantidade(),
                                                                     estoqueProdutoRequest.getValorUnitarioCompra());
@@ -131,6 +143,10 @@ public class EstoqueProdutoService {
         EstoqueProduto estoqueSalvo = estoqueProdutoRepository.save(estoqueProduto);
 
         produtoService.atualizaValorCustoProduto(estoqueSalvo.getProduto().getId());
+
+        movimentacaoEstoqueService.salvarMovimentacaoEstoque(estoqueProduto.getProduto(), estoqueProduto.getAlmoxarifado(),
+                estoqueProdutoRequest.getQuantidade(), TipoMovimentacaoEstoque.AJUSTE, estoqueProdutoRequest.getObservacao(),
+                Optional.empty());
 
         return mapper.map(estoqueSalvo, EstoqueProdutoResponseDTO.class);
 
@@ -160,6 +176,10 @@ public class EstoqueProdutoService {
         EstoqueProduto estoqueSalvo = estoqueProdutoRepository.save(estoqueProduto);
 
         Produto produto = estoqueSalvo.getProduto();
+
+        movimentacaoEstoqueService.salvarMovimentacaoEstoque(estoqueProduto.getProduto(), estoqueProduto.getAlmoxarifado(),
+                estoqueProdutoRequest.getQuantidade(), TipoMovimentacaoEstoque.ENTRADA, "",
+                Optional.empty());
 
         produtoService.atualizaPrecoCompraProduto(produto.getId(), estoqueProdutoRequest.getValorUnitarioCompra());
         produtoService.atualizaValorCustoProduto(produto.getId());
