@@ -60,4 +60,4 @@ jobs:
             sudo docker login -u $DOCKER_USER -p $DOCKER_PASS
             sudo docker rm -f erp-backend-container
             sudo docker rmi kawemorais/erp-system-backend
-            sudo docker run -e SPRING_PROFILES_ACTIVE=prod -p 8080:8080 -e SPRING_DB_HOST_PORT=$SPRING_DB_HOST_PORT -e SPRING_DB_USER=$SPRING_DB_USER -e SPRING_DB_PASSWORD=$SPRING_DB_PASSWORD --name erp-backend-container kawemorais/erp-system-backend
+            sudo docker run -e SPRING_PROFILES_ACTIVE=prod -e SPRING_DB_HOST_PORT=$SPRING_DB_HOST_PORT -e SPRING_DB_USER=$SPRING_DB_USER -e SPRING_DB_PASSWORD=$SPRING_DB_PASSWORD -d -p 8080:8080 --name erp-backend-container kawemorais/erp-system-backend
