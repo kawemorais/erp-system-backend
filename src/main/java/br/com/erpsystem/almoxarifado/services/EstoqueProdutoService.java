@@ -13,8 +13,6 @@ import br.com.erpsystem.almoxarifado.repositories.EstoqueProdutoRepository;
 import br.com.erpsystem.almoxarifado.repositories.ProdutoRepository;
 import br.com.erpsystem.sistema.exception.ExcecaoSolicitacaoInvalida;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,29 +27,19 @@ public class EstoqueProdutoService {
     private final EstoqueProdutoRepository estoqueProdutoRepository;
     private final AlmoxarifadoRepository almoxarifadoRepository;
     private final ProdutoRepository produtoRepository;
-    private MovimentacaoEstoqueService movimentacaoEstoqueService;
-    private ProdutoService produtoService;
-
     private final ModelMapper mapper;
+    private final ProdutoService produtoService;
+    private final MovimentacaoEstoqueService movimentacaoEstoqueService;
 
-    public EstoqueProdutoService(EstoqueProdutoRepository estoqueProdutoRepository, AlmoxarifadoRepository almoxarifadoRepository, ProdutoRepository produtoRepository, ModelMapper mapper) {
+    public EstoqueProdutoService(EstoqueProdutoRepository estoqueProdutoRepository, AlmoxarifadoRepository almoxarifadoRepository, ProdutoRepository produtoRepository, ModelMapper mapper, ProdutoService produtoService, MovimentacaoEstoqueService movimentacaoEstoqueService) {
         this.estoqueProdutoRepository = estoqueProdutoRepository;
         this.almoxarifadoRepository = almoxarifadoRepository;
         this.produtoRepository = produtoRepository;
         this.mapper = mapper;
-    }
-
-    @Lazy
-    @Autowired
-    private void setProdutoService(ProdutoService produtoService){
         this.produtoService = produtoService;
-    }
-
-    @Lazy
-    @Autowired
-    private void setMovimentacaoEstoqueService(MovimentacaoEstoqueService movimentacaoEstoqueService){
         this.movimentacaoEstoqueService = movimentacaoEstoqueService;
     }
+
 
     public List<EstoqueProdutoResponseDTO> listarTodosEstoquesPorParametro(String parametro, Long fkParametro){
 
