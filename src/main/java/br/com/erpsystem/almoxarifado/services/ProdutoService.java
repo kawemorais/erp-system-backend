@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -35,8 +36,12 @@ public class ProdutoService {
     private final CategoriaProdutoRepository categoriaProdutoRepository;
     private final FornecedorRepository fornecedorRepository;
     private final FuncionarioRepository funcionarioRepository;
-    private EstoqueProdutoService estoqueProdutoService;
     private final ModelMapper mapper;
+
+    @Autowired
+    @Lazy
+    private EstoqueProdutoService estoqueProdutoService;
+
 
     public ProdutoService(ProdutoRepository produtoRepository, UnidadeRepository unidadeRepository, CategoriaProdutoRepository categoriaProdutoRepository, FornecedorRepository fornecedorRepository, FuncionarioRepository funcionarioRepository, ModelMapper mapper) {
         this.produtoRepository = produtoRepository;
@@ -45,12 +50,6 @@ public class ProdutoService {
         this.fornecedorRepository = fornecedorRepository;
         this.funcionarioRepository = funcionarioRepository;
         this.mapper = mapper;
-    }
-
-    @Lazy
-    @Autowired
-    private void setEstoqueProdutoService(EstoqueProdutoService estoqueProdutoService){
-        this.estoqueProdutoService = estoqueProdutoService;
     }
 
     public List<ProdutoResponseDTO> listarTodosProdutos(){
@@ -100,6 +99,15 @@ public class ProdutoService {
 
         return mapper.map(produtoSalvo, ProdutoResponseDTO.class);
 
+    }
+
+    public List<ProdutoResponseDTO> criarProdutosPorImportacao(List<Produto> produtos){
+        return produtos.stream()
+                .map(produto -> {
+                    Produto produtoSalvo = produtoRepository.save(produto);
+                    return mapper.map(produtoSalvo, ProdutoResponseDTO.class);
+                })
+                .collect(Collectors.toList());
     }
 
     public ProdutoResponseDTO alterarProdutoPorId(Long id, ProdutoRequestDTO produtoRequest){
@@ -169,12 +177,12 @@ public class ProdutoService {
                 .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Fornecedor não encontrado"));
     }
 
-    private Funcionario retornaFuncionarioSeExistente(Long id){
+    protected Funcionario retornaFuncionarioSeExistente(Long id){
         return funcionarioRepository.findById(id)
                 .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Funcionario não encontrado"));
     }
 
-    private void verificaCodigoProdutoExistente(String codigo){
+    protected void verificaCodigoProdutoExistente(String codigo){
         if (produtoRepository.findByCodigo(codigo).isPresent()) {
             throw new ExcecaoSolicitacaoInvalida("Ja existe produto com este codigo");
         }

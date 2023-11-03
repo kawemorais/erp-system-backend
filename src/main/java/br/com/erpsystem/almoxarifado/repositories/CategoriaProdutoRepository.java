@@ -11,4 +11,6 @@ public interface CategoriaProdutoRepository extends JpaRepository<CategoriaProdu
 
     Optional<CategoriaProduto> findByCodigo(String codigo);
 
+    Optional<CategoriaProduto> findByNome(String nome);
+
 }

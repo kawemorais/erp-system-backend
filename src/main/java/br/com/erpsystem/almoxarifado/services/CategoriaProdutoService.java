@@ -80,4 +80,9 @@ public class CategoriaProdutoService {
                 .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Registro categoria produto não encontrada"));
     }
 
+    protected CategoriaProduto retornaCategoriaProdutoSeExistentePorNome(String nomeCategoriaProduto){
+        return categoriaProdutoRepository.findByNome(nomeCategoriaProduto)
+                .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Registro categoria produto não encontrada"));
+    }
+
 }

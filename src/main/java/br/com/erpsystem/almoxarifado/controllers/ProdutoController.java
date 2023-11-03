@@ -2,23 +2,28 @@ package br.com.erpsystem.almoxarifado.controllers;
 
 import br.com.erpsystem.almoxarifado.dtos.produtoDTO.ProdutoRequestDTO;
 import br.com.erpsystem.almoxarifado.dtos.produtoDTO.ProdutoResponseDTO;
+import br.com.erpsystem.almoxarifado.services.ImportacaoService;
 import br.com.erpsystem.almoxarifado.services.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin()
 @RestController
 @RequestMapping(value = "/api/v1/almoxarifado/produto")
 public class ProdutoController {
 
     private final ProdutoService produtoService;
+    private final ImportacaoService importacaoService;
 
-    public ProdutoController(ProdutoService produtoService) {
+    public ProdutoController(ProdutoService produtoService, ImportacaoService importacaoService) {
         this.produtoService = produtoService;
+        this.importacaoService = importacaoService;
     }
 
     @Operation(summary = "Lista todos os produtos cadastrados", tags = "Modulo: Almoxarifado -> Produtos")
@@ -51,6 +56,15 @@ public class ProdutoController {
     public ResponseEntity<Void> deletarProdutoPorId(@PathVariable Long id){
         produtoService.deletarProdutoPorId(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "Importacao de produtos atraves arquivo excel", tags = "Modulo: Almoxarifado -> Produtos")
+    @PostMapping("/importar")
+    public ResponseEntity<List<ProdutoResponseDTO>> importarProdutosExcel(MultipartFile arquivo){
+
+        List<ProdutoResponseDTO> produtoResponseDTOS = importacaoService.importarProdutosArquivo(arquivo);
+
+        return new ResponseEntity<>(produtoResponseDTOS, HttpStatus.OK);
     }
 
 }

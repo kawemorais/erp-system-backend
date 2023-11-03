@@ -78,4 +78,9 @@ public class UnidadeService {
         return unidadeRepository.findById(id)
                 .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Registro unidade não encontrada"));
     }
+
+    protected Unidade retornaUnidadeSeExistentePorNome(String nomeUnidade){
+        return unidadeRepository.findByNome(nomeUnidade)
+                .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Registro unidade não encontrada"));
+    }
 }

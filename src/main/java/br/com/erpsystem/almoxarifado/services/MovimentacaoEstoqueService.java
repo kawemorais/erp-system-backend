@@ -20,7 +20,6 @@ public class MovimentacaoEstoqueService {
 
     private final MovimentacaoEstoqueRepository movimentacaoEstoqueRepository;
     private final ProdutoService produtoService;
-
     private final ModelMapper mapper;
 
 
