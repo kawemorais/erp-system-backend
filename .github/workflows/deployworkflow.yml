@@ -1,0 +1,63 @@
+name: Deploy-Workflow
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  buildApplication:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout app
+        uses: actions/checkout@v3
+
+      - name: Java setup
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        
+      - name: Build project with gradlew
+        run: ./gradlew clean build
+
+      - name: Login to docker hub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+
+      - name: Build docker image
+        run: docker build -t kawemorais/erp-system-backend .
+
+      - name: Publish image to docker hub
+        run: docker push kawemorais/erp-system-backend:latest
+
+  deployApplication:
+    needs: buildApplication
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Start app
+        uses: appleboy/ssh-action@master
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASS: ${{secrets.DOCKER_PASSWORD}}
+          SPRING_DB_HOST_PORT: ${{secrets.SPRING_DB_HOST_PORT}}
+          SPRING_DB_USER: ${{secrets.SPRING_DB_USER}}
+          SPRING_DB_PASSWORD: ${{secrets.SPRING_DB_PASSWORD}}
+
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.HOST_USERNAME }}
+          key: ${{ secrets.HOST_SSH_KEY }}
+          envs: DOCKER_USER, DOCKER_PASS, SPRING_DB_HOST_PORT, SPRING_DB_USER, SPRING_DB_PASSWORD
+          script: |
+            sudo docker login -u $DOCKER_USER -p $DOCKER_PASS
+            sudo docker rm -f erp-backend-container
+            sudo docker rmi kawemorais/erp-system-backend
+            sudo docker run -d -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod -e SPRING_DB_HOST_PORT=$SPRING_DB_HOST_PORT -e SPRING_DB_USER=$SPRING_DB_USER -e SPRING_DB_PASSWORD=$SPRING_DB_PASSWORD --name erp-backend-container kawemorais/erp-system-backend
