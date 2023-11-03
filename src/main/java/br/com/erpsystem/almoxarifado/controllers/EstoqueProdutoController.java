@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin()
 @RestController
 @RequestMapping(value = "/api/v1/almoxarifado/estoque-produto")
 public class EstoqueProdutoController {
