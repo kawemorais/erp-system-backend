@@ -15,7 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 				version = "1.0",
 				contact = @Contact(name = "linkedin", url = "https://www.linkedin.com/in/kawemorais/")
 		),
-		servers = @Server(url = "localhost:8080", description = "Aplicação local")
+		servers = {@Server(url = "localhost:8080", description = "Aplicação local"),
+				   @Server(url = "http://erpapi.kawedev.com.br:8080", description = "Aplicação AWS")}
 )
 public class ErpSystemApplication {
 
