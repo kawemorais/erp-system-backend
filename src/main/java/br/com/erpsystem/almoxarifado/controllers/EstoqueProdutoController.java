@@ -42,7 +42,7 @@ public class EstoqueProdutoController {
     @PostMapping()
     public ResponseEntity<EstoqueProdutoResponseDTO> criarNovoEstoqueProduto(@RequestBody
                                                                 @Valid EstoqueProdutoRequestDTO estoqueProdutoRequest){
-        return new ResponseEntity<>(estoqueProdutoService.criarNovoEstoqueProduto(estoqueProdutoRequest), HttpStatus.OK);
+        return new ResponseEntity<>(estoqueProdutoService.criarNovoEstoqueProduto(estoqueProdutoRequest), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Altera estoque produto por id", tags = "Modulo: Almoxarifado -> Estoque Produto")

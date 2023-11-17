@@ -38,7 +38,7 @@ public class FuncaoController {
     @Operation(summary = "Criar uma função", tags = "Modulo: Pessoa -> Funcao")
     @PostMapping
     public ResponseEntity<FuncaoResponseDTO> criarCargo(@RequestBody @Valid FuncaoRequestDTO funcaoRequest){
-        return new ResponseEntity<>(funcaoService.criarFuncao(funcaoRequest), HttpStatus.OK);
+        return new ResponseEntity<>(funcaoService.criarFuncao(funcaoRequest), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Alterar uma função usando id", tags = "Modulo: Pessoa -> Funcao")

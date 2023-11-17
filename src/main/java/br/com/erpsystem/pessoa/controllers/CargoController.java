@@ -37,7 +37,7 @@ public class CargoController {
     @Operation(summary = "Criar um cargo", tags = "Modulo: Pessoa -> Cargo")
     @PostMapping
     public ResponseEntity<CargoResponseDTO> criarCargo(@RequestBody @Valid CargoRequestDTO cargoRequest){
-        return new ResponseEntity<>(cargoService.criarCargo(cargoRequest), HttpStatus.OK);
+        return new ResponseEntity<>(cargoService.criarCargo(cargoRequest), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Alterar um cargo usando id", tags = "Modulo: Pessoa -> Cargo")
