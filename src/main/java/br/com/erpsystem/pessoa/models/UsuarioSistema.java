@@ -1,14 +1,20 @@
 package br.com.erpsystem.pessoa.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_usuarios_sistema")
+@Builder
 public class UsuarioSistema implements Serializable {
 
     @Serial
@@ -22,7 +28,7 @@ public class UsuarioSistema implements Serializable {
     @Column(name = "usuario", nullable = false, length = 50)
     private String usuario;
 
-    @Column(name = "senha", nullable = false, unique = true)
+    @Column(name = "senha", nullable = false)
     private String senha;
 
     @OneToOne(fetch = FetchType.EAGER)

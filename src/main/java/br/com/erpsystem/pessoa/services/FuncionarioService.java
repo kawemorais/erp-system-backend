@@ -161,7 +161,7 @@ public class FuncionarioService {
         return mapper.map(funcionarioSalvo, FuncionarioResponseDTO.class);
     }
 
-    private Funcionario retornaFuncionarioSeExistente(Long id) {
+    protected Funcionario retornaFuncionarioSeExistente(Long id) {
         return funcionarioRepository.findById(id)
                 .orElseThrow(() -> new ExcecaoSolicitacaoInvalida("Registro de funcionário não encontrado"));
     }
