@@ -57,4 +57,16 @@ public class ApiExcecaoHandler {
 
         return new ResponseEntity<>(detalhesExcecao, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ExcecaoErroAutenticacao.class)
+    public ResponseEntity<DetalhesExcecao> handlerExcecaoErroInterno(ExcecaoErroAutenticacao excecao){
+        return new ResponseEntity<>(
+                DetalhesExcecao.builder()
+                        .codigoStatus(HttpStatus.UNAUTHORIZED.value())
+                        .status(HttpStatus.UNAUTHORIZED.getReasonPhrase().toUpperCase())
+                        .descricao(excecao.getMessage())
+                        .timestamp(dataUtil.formatarData(LocalDateTime.now()))
+                        .build(), HttpStatus.UNAUTHORIZED);
+
+    }
 }

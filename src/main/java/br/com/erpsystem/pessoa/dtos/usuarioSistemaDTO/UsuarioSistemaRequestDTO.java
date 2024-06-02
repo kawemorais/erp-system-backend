@@ -1,6 +1,7 @@
 package br.com.erpsystem.pessoa.dtos.usuarioSistemaDTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class UsuarioSistemaRequestDTO {
     @Length(min = 4, max = 16, message = "Campo senha deve ter entre 4 e 16 caracteres")
     private String senha;
 
-    @NotBlank(message = "Campo funcionário não pode estar vazio")
+    @NotNull(message = "Campo funcionário não pode estar vazio")
     private Long fkFuncionario;
 
     private Boolean isAtivo;
