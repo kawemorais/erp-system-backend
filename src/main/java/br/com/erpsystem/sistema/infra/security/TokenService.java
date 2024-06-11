@@ -1,7 +1,6 @@
 package br.com.erpsystem.sistema.infra.security;
 
 import br.com.erpsystem.pessoa.models.UsuarioSistema;
-import br.com.erpsystem.sistema.exception.ExcecaoErroAutenticacao;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -50,8 +49,7 @@ public class TokenService {
                     .getSubject();
 
         } catch (JWTVerificationException e) {
-            log.warn(e.getMessage());
-            throw new ExcecaoErroAutenticacao("Token de autenticação invalido");
+            return null;
         }
     }
 
